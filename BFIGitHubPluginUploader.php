@@ -1,4 +1,5 @@
 <?php
+if ( !class_exists('BFIGitHubPluginUpdater') ) {
 class BFIGitHubPluginUpdater {
  
     private $slug; // plugin slug
@@ -167,5 +168,6 @@ if ( $wasActivated ) {
 return $result;
      
     }
+}
 }
 ?>
