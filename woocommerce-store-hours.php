@@ -50,11 +50,11 @@ list( $today_year, $today_month, $today_day, $hour, $minute, $second ) = split( 
   }
   else if (($today_day == 06 )||($today_day == 07 )){
 	  /*F-S*/
-	  if (($hour < 17)||($hour > 18)) {
+	  if (($hour < 17)||($hour > 19)) {
 	 /*Closed: Not Open Yet or Too Late*/ 
 	 close_store();
   }
-   if (($hour == 9)&&($minute >44)) {
+   if (($hour == 19)&&($minute > 44)) {
 	  /*Closed: Too Late*/  
 	  close_store();
   }
