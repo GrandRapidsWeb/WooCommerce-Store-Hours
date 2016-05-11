@@ -3,7 +3,7 @@
 Plugin Name: GR WooCommerce Store Hours
 Plugin URI: https://github.com/GrandRapidsWeb/WooCommerce-Store-Hours
 Description: Only allows orders to be made while the store is open.
-Version: 0.7
+Version: 0.8
 Author: John Wierenga
 Author URI: http://grandrapidsweb.com
 
