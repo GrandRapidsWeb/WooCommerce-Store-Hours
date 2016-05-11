@@ -62,10 +62,6 @@ list( $today_year, $today_month, $today_day, $hour, $minute, $second ) = split( 
 else if ( is_plugin_active( 'gr-pause-woocommerce/gr-pause-woocommerce.php' ) ) {
  close_store();	
 }
-  
-  else {
-	  add_action('woo_content_before', 'store_open_msg', 40);
-  }
 
 }
 
@@ -84,10 +80,9 @@ function close_store(){
 		add_action('woo_content_before', 'store_msg', 40);
 }
 function store_msg(){
+		if ((is_woocommerce())||(is_cart())||(is_checkout())){
 echo '<div class="gr-store-close-msg">Sorry! Northern Lights Poutine & Deli is not accepting orders at this time. We are either at a catering event or this is outside of our initial operating hours. Thanks for checking us out and we hope you\'ll check us out again soon!" -- Mountie Moose</div>';
 }
-function store_open_msg(){
-	echo 'Open for business';
 }
 function store_replace_btn(){
 	echo 'Come back when Northen Lights Deli is open to make a purchase';
