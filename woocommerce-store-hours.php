@@ -3,7 +3,7 @@
 Plugin Name: GR WooCommerce Store Hours
 Plugin URI: https://github.com/GrandRapidsWeb/WooCommerce-Store-Hours
 Description: Only allows orders to be made while the store is open.
-Version: 0.8
+Version: 0.9
 Author: John Wierenga
 Author URI: http://grandrapidsweb.com
 
@@ -31,38 +31,25 @@ if ( is_admin() ) {
 include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 add_action('init','store_open');
 function store_open(){
-$blogtime = current_time( 'mysql' ); 
-list( $today_year, $today_month, $today_day, $hour, $minute, $second ) = split( '([^0-9])', $blogtime );
-  if ($today_day == 01 ){
-	  /*Closed Because It's Sunday*/
-	  close_store();
-  }
-  else if (($today_day == 02 )||($today_day == 03 )||($today_day == 04 )||($today_day == 05 )){
-	  /*M-T*/
-  if (($hour < 11)||($hour > 14)) {
-	 /*Closed: Not Open Yet or Too Late*/ 
-	 close_store();
-  }
-  if (($hour == 14)&&($minute >14)) {
-	  /*Closed: Too Late*/  
-	  close_store();
-  }
-  }
-  else if (($today_day == 06 )||($today_day == 07 )){
-	  /*F-S*/
-	  if (($hour < 17)||($hour > 19)) {
-	 /*Closed: Not Open Yet or Too Late*/ 
-	 close_store();
-  }
-   if (($hour == 19)&&($minute > 44)) {
-	  /*Closed: Too Late*/  
-	  close_store();
-  }
-  }   
-else if ( is_plugin_active( 'gr-pause-woocommerce/gr-pause-woocommerce.php' ) ) {
- close_store();	
+date_default_timezone_set('America/Chicago');
+$blogday = jddayofweek ( cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y")) , 1 ); 
+$bloghour = date('H');
+$blogminute = date('i');
+ if ($blogday=="Sunday" && $bloghour  > 15 && $bloghour  < 21 && $blogminute  > 14 && $blogminute  < 46) {
+    add_action('woo_content_before', 'store_open_msg', 40);
+ 
+}
+if ($blogday=="Friday" && $bloghour  > 15 && $bloghour  < 21 && $blogminute  > 14 && $blogminute  < 46) {
+   add_action('woo_content_before', 'store_open_msg', 40);
+ 
+}
+else {
+  close_store();
 }
 
+}
+if ( is_plugin_active( 'gr-pause-woocommerce/gr-pause-woocommerce.php' ) ) {
+ close_store();	
 }
 
 function close_store(){
@@ -80,9 +67,10 @@ function close_store(){
 		add_action('woo_content_before', 'store_msg', 40);
 }
 function store_msg(){
-		if ((is_woocommerce())||(is_cart())||(is_checkout())){
 echo '<div class="gr-store-close-msg">Sorry! Northern Lights Poutine & Deli is not accepting orders at this time. We are either at a catering event or this is outside of our initial operating hours. Thanks for checking us out and we hope you\'ll check us out again soon!" -- Mountie Moose</div>';
 }
+function store_open_msg(){
+	echo 'Open for business';
 }
 function store_replace_btn(){
 	echo 'Come back when Northen Lights Deli is open to make a purchase';
