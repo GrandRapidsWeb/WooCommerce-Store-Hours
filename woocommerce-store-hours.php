@@ -3,7 +3,7 @@
 Plugin Name: GR WooCommerce Store Hours
 Plugin URI: https://github.com/GrandRapidsWeb/WooCommerce-Store-Hours
 Description: Only allows orders to be made while the store is open.
-Version: 0.9
+Version: 0.9.1
 Author: John Wierenga
 Author URI: http://grandrapidsweb.com
 
@@ -22,8 +22,7 @@ Author URI: http://grandrapidsweb.com
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/      
-
+*/   
 require_once( 'BFIGitHubPluginUploader.php' );
 if ( is_admin() ) {
     new BFIGitHubPluginUpdater( __FILE__, 'grandrapidsweb', "WooCommerce-Store-Hours" );
@@ -35,13 +34,28 @@ date_default_timezone_set('America/Chicago');
 $blogday = jddayofweek ( cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y")) , 1 ); 
 $bloghour = date('H');
 $blogminute = date('i');
- if ($blogday=="Sunday" && $bloghour  > 15 && $bloghour  < 21 && $blogminute  > 14 && $blogminute  < 46) {
+ if ($blogday=="Sunday") {
+	 
+		 if ($bloghour == 15 && $blogminute  > 14) {
     add_action('woo_content_before', 'store_open_msg', 40);
- 
+	 }
+	 else if ($bloghour == 21 && $blogminute  < 46){
+		 add_action('woo_content_before', 'store_open_msg', 40); 
+	 }
+	 else if ($bloghour > 15 && $bloghour  < 21){
+		 add_action('woo_content_before', 'store_open_msg', 40); 
+	 }
 }
-if ($blogday=="Friday" && $bloghour  > 15 && $bloghour  < 21 && $blogminute  > 14 && $blogminute  < 46) {
-   add_action('woo_content_before', 'store_open_msg', 40);
- 
+ else if ($blogday=="Friday") {
+	 if ($bloghour == 15 && $blogminute  > 14) {
+    add_action('woo_content_before', 'store_open_msg', 40);
+	 }
+	 else if ($bloghour == 21 && $blogminute  < 46){
+		 add_action('woo_content_before', 'store_open_msg', 40); 
+	 }
+	 else if ($bloghour > 15 && $bloghour  < 21){
+		 add_action('woo_content_before', 'store_open_msg', 40); 
+	 }
 }
 else {
   close_store();
@@ -72,7 +86,6 @@ echo '<div class="gr-store-close-msg">Sorry! Northern Lights Poutine & Deli is n
 }
 }
 function store_replace_btn(){
-	echo 'Come back when Northen Lights Deli is open to make a purchase';
+	echo 'Come back when Northern Lights Deli is open to make a purchase';
 }
 ?>
-
